@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pikao's Food - Carta Digital</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <span>P</span>
+                    </div>
+                    <div class="brand">
+                        <h1>PIKAO'S</h1>
+                        <p>FOOD</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button id="darkModeBtn" class="icon-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="adminBtn" class="admin-btn">Admin</button>
+                    <button id="cartBtn" class="icon-btn cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount" class="cart-count hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Panel (Hidden by default) -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <div class="container">
+            <div class="admin-content">
+                <div class="admin-header">
+                    <h2>Panel de Administración</h2>
+                    <div class="admin-actions">
+                        <button id="addItemBtn" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Agregar Plato
+                        </button>
+                        <button id="logoutBtn" class="btn btn-secondary">Salir</button>
+                    </div>
+                </div>
+                <p class="admin-warning">Modo administrador activo. Los clientes no pueden ver este panel.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar platos...">
+            </div>
+            
+            <div class="categories">
+                <button class="category-btn active" data-category="Todos">Todos</button>
+                <button class="category-btn" data-category="Menu Pikaos">Menú Pikao's</button>
+                <button class="category-btn" data-category="Marisqueria">Marisquería</button>
+                <button class="category-btn" data-category="Comidas Rapidas">Comidas Rápidas</button>
+                <button class="category-btn" data-category="Bebidas">Bebidas</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Items -->
+    <main class="container">
+        <div id="menuGrid" class="menu-grid">
+            <!-- Los items del menú se generarán dinámicamente -->
+        </div>
+        
+        <div id="noResults" class="no-results hidden">
+            <p>No se encontraron platos que coincidan con tu búsqueda.</p>
+        </div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tu Pedido</h3>
+                <button id="closeCartBtn" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div id="cartItems" class="cart-items">
+                    <!-- Los items del carrito se generarán dinámicamente -->
+                </div>
+                
+                <div id="emptyCart" class="empty-cart">
+                    <p>Tu carrito está vacío</p>
+                </div>
+                
+                <div id="cartSummary" class="cart-summary hidden">
+                    <div class="total">
+                        <span>Total: </span>
+                        <span id="totalPrice">$0</span>
+                    </div>
+                    
+                    <div class="customer-info">
+                        <label for="customerName">Nombre (opcional)</label>
+                        <input type="text" id="customerName" placeholder="Tu nombre">
+                        
+                        <label for="orderNote">Nota del pedido (opcional)</label>
+                        <textarea id="orderNote" placeholder="Ej: Para llevar, Mesa 3, Sin cebolla..." rows="3"></textarea>
+                    </div>
+                    
+                    <button id="confirmOrderBtn" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> Confirmar Pedido por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal hidden">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>Acceso Administrador</h3>
+                <button id="closeAdminLoginBtn" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Ingresa la contraseña para gestionar el menú</p>
+                <input type="password" id="adminPassword" placeholder="Contraseña">
+                <button id="loginBtn" class="btn btn-primary">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Form Modal -->
+    <div id="itemFormModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="formTitle">Agregar Nuevo Plato</h3>
+                <button id="closeFormBtn" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="itemForm">
+                    <div class="form-group">
+                        <label for="itemName">Nombre del plato *</label>
+                        <input type="text" id="itemName" required placeholder="Ej: Hamburguesa Especial">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="itemDescription">Descripción *</label>
+                        <textarea id="itemDescription" required placeholder="Describe los ingredientes y preparación..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="itemPrice">Precio (COP) *</label>
+                        <input type="text" id="itemPrice" required placeholder="25000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="itemCategory">Categoría *</label>
+                        <select id="itemCategory" required>
+                            <option value="Menu Pikaos">Menú Pikao's</option>
+                            <option value="Marisqueria">Marisquería</option>
+                            <option value="Comidas Rapidas">Comidas Rápidas</option>
+                            <option value="Bebidas">Bebidas</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="itemImage">URL de la imagen (opcional)</label>
+                        <input type="url" id="itemImage" placeholder="https://ejemplo.com/imagen.jpg">
+                        <small>Deja vacío para usar imagen por defecto</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span id="saveButtonText">Agregar Plato</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo small">
+                        <span>P</span>
+                    </div>
+                    <span>PIKAO'S FOOD</span>
+                </div>
+                <p>Lo mejor en la Región</p>
+                <div class="contact-info">
+                    <span>📱 322 9235925</span>
+                    <span>📧 pikaosfood</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
