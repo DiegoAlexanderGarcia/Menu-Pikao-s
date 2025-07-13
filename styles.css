@@ -904,7 +904,7 @@ body {
 
 /* Footer mejorado */
 .footer {
-    background: linear-gradient(135deg, var(--secondary-color), #1f1f1f);
+    background: linear-gradient(360deg, var(--secondary-color), #1f1f1f);
     color: var(--primary-color);
     padding: 3rem 0;
     margin-top: 3rem;
