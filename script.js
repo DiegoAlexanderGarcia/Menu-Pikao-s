@@ -554,8 +554,8 @@ class PikaosApp {
             <div class="menu-item fade-in">
                 <div class="item-image">
                     <img src="${item.image}" alt="${item.name}" 
-                         onerror="this.src='https://via.placeholder.com/300x200/facc15/000000?text=Sin+Imagen'"
-                         loading="lazy">
+                        onerror="this.src='https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'"
+                        loading="lazy">
                 </div>
                 <div class="item-content">
                     <h3 class="item-title">${item.name}</h3>

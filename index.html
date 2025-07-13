@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pikao's Food - Carta Digital</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/image/Imagen_de_WhatsApp_2025-07-13_a_las_11.55.38_1f2e7e3b-removebg-preview.ico" type="image/x-icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
@@ -23,11 +24,11 @@
                 </div>
                 
                 <div class="header-actions">
-                    <button id="darkModeBtn" class="icon-btn">
+                    <button id="darkModeBtn" class="icon-btn" title="Cambiar tema">
                         <i class="fas fa-moon"></i>
                     </button>
                     <button id="adminBtn" class="admin-btn">Admin</button>
-                    <button id="cartBtn" class="icon-btn cart-btn">
+                    <button id="cartBtn" class="icon-btn cart-btn" title="Ver carrito">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cartCount" class="cart-count hidden">0</span>
                     </button>
@@ -36,20 +37,25 @@
         </div>
     </header>
 
-    <!-- Admin Panel (Hidden by default) -->
+    <!-- Admin Panel -->
     <div id="adminPanel" class="admin-panel hidden">
         <div class="container">
             <div class="admin-content">
                 <div class="admin-header">
-                    <h2>Panel de Administración</h2>
+                    <h2><i class="fas fa-cog"></i> Panel de Administración</h2>
                     <div class="admin-actions">
                         <button id="addItemBtn" class="btn btn-success">
                             <i class="fas fa-plus"></i> Agregar Plato
                         </button>
-                        <button id="logoutBtn" class="btn btn-secondary">Salir</button>
+                        <button id="logoutBtn" class="btn btn-secondary">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
                     </div>
                 </div>
-                <p class="admin-warning">Modo administrador activo. Los clientes no pueden ver este panel.</p>
+                <p class="admin-warning">
+                    <i class="fas fa-info-circle"></i> 
+                    Modo administrador activo. Los clientes no pueden ver este panel.
+                </p>
             </div>
         </div>
     </div>
@@ -62,12 +68,8 @@
                 <input type="text" id="searchInput" placeholder="Buscar platos...">
             </div>
             
-            <div class="categories">
-                <button class="category-btn active" data-category="Todos">Todos</button>
-                <button class="category-btn" data-category="Menu Pikaos">Menú Pikao's</button>
-                <button class="category-btn" data-category="Marisqueria">Marisquería</button>
-                <button class="category-btn" data-category="Comidas Rapidas">Comidas Rápidas</button>
-                <button class="category-btn" data-category="Bebidas">Bebidas</button>
+            <div class="categories" id="categoriesContainer">
+                <!-- Las categorías se generarán dinámicamente -->
             </div>
         </div>
     </div>
@@ -79,15 +81,17 @@
         </div>
         
         <div id="noResults" class="no-results hidden">
+            <i class="fas fa-search"></i>
             <p>No se encontraron platos que coincidan con tu búsqueda.</p>
         </div>
     </main>
 
     <!-- Cart Modal -->
     <div id="cartModal" class="modal hidden">
+        <div class="modal-overlay"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Tu Pedido</h3>
+                <h3><i class="fas fa-shopping-cart"></i> Tu Pedido</h3>
                 <button id="closeCartBtn" class="close-btn">
                     <i class="fas fa-times"></i>
                 </button>
@@ -99,21 +103,33 @@
                 </div>
                 
                 <div id="emptyCart" class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
                     <p>Tu carrito está vacío</p>
+                    <small>Agrega algunos platos deliciosos</small>
                 </div>
                 
                 <div id="cartSummary" class="cart-summary hidden">
-                    <div class="total">
-                        <span>Total: </span>
-                        <span id="totalPrice">$0</span>
+                    <div class="total-section">
+                        <div class="total">
+                            <span>Total: </span>
+                            <span id="totalPrice">$0</span>
+                        </div>
                     </div>
                     
                     <div class="customer-info">
-                        <label for="customerName">Nombre (opcional)</label>
-                        <input type="text" id="customerName" placeholder="Tu nombre">
+                        <div class="form-group">
+                            <label for="customerName">
+                                <i class="fas fa-user"></i> Nombre (opcional)
+                            </label>
+                            <input type="text" id="customerName" placeholder="Tu nombre">
+                        </div>
                         
-                        <label for="orderNote">Nota del pedido (opcional)</label>
-                        <textarea id="orderNote" placeholder="Ej: Para llevar, Mesa 3, Sin cebolla..." rows="3"></textarea>
+                        <div class="form-group">
+                            <label for="orderNote">
+                                <i class="fas fa-sticky-note"></i> Nota del pedido (opcional)
+                            </label>
+                            <textarea id="orderNote" placeholder="Ej: Para llevar, Mesa 3, Sin cebolla..." rows="3"></textarea>
+                        </div>
                     </div>
                     
                     <button id="confirmOrderBtn" class="btn btn-whatsapp">
@@ -126,9 +142,10 @@
 
     <!-- Admin Login Modal -->
     <div id="adminLoginModal" class="modal hidden">
+        <div class="modal-overlay"></div>
         <div class="modal-content small">
             <div class="modal-header">
-                <h3>Acceso Administrador</h3>
+                <h3><i class="fas fa-lock"></i> Acceso Administrador</h3>
                 <button id="closeAdminLoginBtn" class="close-btn">
                     <i class="fas fa-times"></i>
                 </button>
@@ -136,17 +153,25 @@
             
             <div class="modal-body">
                 <p>Ingresa la contraseña para gestionar el menú</p>
-                <input type="password" id="adminPassword" placeholder="Contraseña">
-                <button id="loginBtn" class="btn btn-primary">Ingresar</button>
+                <div class="form-group">
+                    <input type="password" id="adminPassword" placeholder="Contraseña" autocomplete="current-password">
+                </div>
+                <button id="loginBtn" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Ingresar
+                </button>
+                <div id="loginError" class="error-message hidden">
+                    <i class="fas fa-exclamation-triangle"></i> Contraseña incorrecta
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Item Form Modal -->
     <div id="itemFormModal" class="modal hidden">
+        <div class="modal-overlay"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="formTitle">Agregar Nuevo Plato</h3>
+                <h3 id="formTitle"><i class="fas fa-plus"></i> Agregar Nuevo Plato</h3>
                 <button id="closeFormBtn" class="close-btn">
                     <i class="fas fa-times"></i>
                 </button>
@@ -155,22 +180,30 @@
             <div class="modal-body">
                 <form id="itemForm">
                     <div class="form-group">
-                        <label for="itemName">Nombre del plato *</label>
+                        <label for="itemName">
+                            <i class="fas fa-utensils"></i> Nombre del plato *
+                        </label>
                         <input type="text" id="itemName" required placeholder="Ej: Hamburguesa Especial">
                     </div>
                     
                     <div class="form-group">
-                        <label for="itemDescription">Descripción *</label>
+                        <label for="itemDescription">
+                            <i class="fas fa-align-left"></i> Descripción *
+                        </label>
                         <textarea id="itemDescription" required placeholder="Describe los ingredientes y preparación..." rows="3"></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="itemPrice">Precio (COP) *</label>
+                        <label for="itemPrice">
+                            <i class="fas fa-dollar-sign"></i> Precio (COP) *
+                        </label>
                         <input type="text" id="itemPrice" required placeholder="25000">
                     </div>
                     
                     <div class="form-group">
-                        <label for="itemCategory">Categoría *</label>
+                        <label for="itemCategory">
+                            <i class="fas fa-tags"></i> Categoría *
+                        </label>
                         <select id="itemCategory" required>
                             <option value="Menu Pikaos">Menú Pikao's</option>
                             <option value="Marisqueria">Marisquería</option>
@@ -180,15 +213,19 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="itemImage">URL de la imagen (opcional)</label>
+                        <label for="itemImage">
+                            <i class="fas fa-image"></i> URL de la imagen (opcional)
+                        </label>
                         <input type="url" id="itemImage" placeholder="https://ejemplo.com/imagen.jpg">
                         <small>Deja vacío para usar imagen por defecto</small>
                     </div>
                     
                     <div class="form-actions">
-                        <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancelar</button>
+                        <button type="button" id="cancelFormBtn" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
                         <button type="submit" class="btn btn-primary">
-                            <span id="saveButtonText">Agregar Plato</span>
+                            <i class="fas fa-save"></i> <span id="saveButtonText">Agregar Plato</span>
                         </button>
                     </div>
                 </form>
@@ -208,12 +245,21 @@
                 </div>
                 <p>Lo mejor en la Región</p>
                 <div class="contact-info">
-                    <span>📱 322 9235925</span>
-                    <span>📧 pikaosfood</span>
+                    <a href="tel:3229235925" class="contact-link">
+                        <i class="fas fa-phone"></i> 322 9235925
+                    </a>
+                    <a href="https://instagram.com/pikaosfood" class="contact-link" target="_blank">
+                        <i class="fab fa-instagram"></i> pikaosfood
+                    </a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
